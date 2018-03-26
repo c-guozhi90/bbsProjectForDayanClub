@@ -817,7 +817,12 @@ function dimplode($array) {
 		return 0;
 	}
 }
-
+/**
+* 返回某文件路径
+* @param string $libname 具体库名,前缀和后缀之间用 / 隔开
+* @param string $folder 默认为空，文件所在路径，将会变成source/$folder
+* @return mixed 若路径格式合法则返回包含文件名的绝对文件路径，否则返回false
+*/
 function libfile($libname, $folder = '') {
 	$libpath = '/source/'.$folder;
 	if(strstr($libname, '/')) {

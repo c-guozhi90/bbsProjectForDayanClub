@@ -404,7 +404,12 @@ function showmessagenoperm($type, $fid, $formula = '') {
 
 	showmessage($message, NULL, array('fid' => $fid, 'permgroups' => $permgroups, 'grouptitle' => $_G['group']['grouptitle']), array('login' => 1), $custom);
 }
-
+/**
+* 函数说明
+* 载入论坛前的一些前序工作，包括用户组权限判断，宽高设定等
+* @param string $fid 未知
+* @param string $tid 标题id
+*/
 function loadforum($fid = null, $tid = null) {
 	global $_G;
 	$tid = intval(isset($tid) ? $tid : getgpc('tid'));
@@ -428,9 +433,11 @@ function loadforum($fid = null, $tid = null) {
 			dheader('location: archiver/');
 		}
 	}
+	//重定向，用于返回之前访问的页面。
 	if(defined('IN_ARCHIVER') && $_G['setting']['archiverredirect'] && !IS_ROBOT) {
 		dheader('location: ../forum.php'.($_G['mod'] ? '?mod='.$_G['mod'].(!empty($_GET['fid']) ? '&fid='.$_GET['fid'] : (!empty($_GET['tid']) ? '&tid='.$_GET['tid'] : '')) : ''));
 	}
+//设置某高宽值，作用未知
 	if($_G['setting']['forumpicstyle']) {
 		$_G['setting']['forumpicstyle'] = dunserialize($_G['setting']['forumpicstyle']);
 		empty($_G['setting']['forumpicstyle']['thumbwidth']) && $_G['setting']['forumpicstyle']['thumbwidth'] = 203;
@@ -438,6 +445,7 @@ function loadforum($fid = null, $tid = null) {
 	} else {
 		$_G['setting']['forumpicstyle'] = array('thumbwidth' => 203, 'thumbheight' => 999);
 	}
+
 	if($fid) {
 		$fid = is_numeric($fid) ? intval($fid) : (!empty($_G['setting']['forumfids'][$fid]) ? $_G['setting']['forumfids'][$fid] : 0);
 	}
@@ -475,6 +483,7 @@ function loadforum($fid = null, $tid = null) {
 
 		if($forum) {
 			if($_G['uid']) {
+				//用于限定用户功能
 				if($_G['member']['accessmasks']) {
 					$query = C::t('forum_access')->fetch_all_by_fid_uid($fid, $_G['uid']);
 					$forum['allowview'] = $query[0]['allowview'];

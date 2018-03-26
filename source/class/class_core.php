@@ -48,7 +48,11 @@ class core
 		}
 		return self::$_app;
 	}
-
+/**
+* 返回带有表名的自身对象
+* @param mixed $name
+* @return mixed [description]
+*/
 	public static function t($name) {
 		return self::_make_obj($name, 'table', DISCUZ_TABLE_EXTENDABLE);
 	}
